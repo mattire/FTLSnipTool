@@ -9,21 +9,15 @@ using System.Windows.Forms;
 
 namespace SnippetUtil
 {
-    class Rint
-    {
-        public int val { get; set; }
-        public int lim { get; set; }
-        public Rint(int v, int m) { val = v; lim = m; }
-        public void Inc() { val++; if (val >= lim) val = 0; }
-        public void Dec() { val--; if (val <= lim) val = lim - 1; }
-    }
 
-    class FieldManager
+    partial class FieldManager
     {
         private string mContents;
 
-        public static string MStartStr { get; } = "#\\*";
-        public static string MEndStr { get; } = "\\*#";
+        public static string MStartStrRE { get; } = "#\\*";
+        public static string MEndStrRE   { get; } = "\\*#";
+        public static string MStartStr { get; } = "#*";
+        public static string MEndStr { get; } = "*#";
 
         MatchCollection mMatchCollection;
         private int mStartLen;
@@ -41,13 +35,66 @@ namespace SnippetUtil
 
         public FieldManager(string contents, RichTextBox richTextBox)
         {
+            mInputHandler = new InputHandler(this);
             mRichTextBox = richTextBox;
             mRichTextBox.KeyDown += MRichTextBox_KeyDown;
 
+            ((FTLRichTextBox)mRichTextBox).TabForward  += FieldManager_TabForward;
+            ((FTLRichTextBox)mRichTextBox).TabBackward += FieldManager_TabBackward;
+            ((FTLRichTextBox)mRichTextBox).RtbKeyDown  += FieldManager_KeyDown;
+
             this.mContents = contents;
-            mStartLen = MStartStr.Length;
-            mEndLen = MEndStr.Length;
+            mStartLen = MStartStrRE.Length;
+            mEndLen = MEndStrRE.Length;
             Refresh();
+        }
+
+        //int sessionStrLen=0;
+        //StringBuilder fldSessionBldr = new StringBuilder();
+        InputHandler mInputHandler;
+        private void FieldManager_KeyDown(object sender, EventArgs e)
+        {
+            var kea = (KeyEventArgs)e;
+            mInputHandler.Handle(kea);
+            
+            //Keys.Back
+            //kea.KeyCode== Keys.Left
+            //var ch = (char)kea.KeyValue;
+            //System.Diagnostics.Debug.WriteLine(ch);
+            //fldSessionBldr.Append()
+        }
+
+        private void FieldManager_TabBackward(object sender, EventArgs e)
+        {
+            SessionEnd();
+            PrevField();
+        }
+
+        private void FieldManager_TabForward(object sender, EventArgs e)
+        {
+            SessionEnd();
+            NextField();
+        }
+
+        private void SessionEnd()
+        {
+            if (mInputHandler.Changed) {
+                //var newFldLen = mInputHandler.FldLen;
+                var newFldLen = mInputHandler.Len;
+                var currentInt = selectedFld.val;
+                var hldr = mHolders[currentInt];
+                var newFldContent = mRichTextBox.Text.Substring(hldr.RBStart, newFldLen);
+                newFldContent = newFldContent.Replace("\n", "");
+                var newFldCntntWSE = MStartStr + newFldContent + MEndStr;
+                // construct new content
+                var fstPart = mContents.Substring(0, hldr.Start);
+                var mdlPart = newFldCntntWSE;
+                var lstPart = mContents.Substring(hldr.End, mContents.Length - hldr.End);
+                var newContent = fstPart + mdlPart + lstPart;
+                System.Diagnostics.Debug.WriteLine(newContent);
+                Refresh(newContent);
+                mInputHandler.Len = 0;
+            }
         }
 
         public void Refresh(string newContents)
@@ -58,38 +105,14 @@ namespace SnippetUtil
 
         public void Refresh()
         {
-            Regex rx = new Regex($"{MStartStr}.*?{MEndStr}");
+            var oldSel = selectedFld?.val;
+            Regex rx = new Regex($"{MStartStrRE}.*?{MEndStrRE}");
             mMatchCollection = rx.Matches(this.mContents);
-            ProcessContent();
+            ProcessContent(oldSel);
+            mInputHandler.Changed = false;
         }
 
-        public class FieldHolder {
-            public FieldHolder(Match m, int order, int lfCount)
-            {
-                //var stLen = FieldManager.MStartStr.Length;
-                //var enLen = FieldManager.MEndStr.Length;
-                var stLen = 2;
-                var enLen = 2;
-                int len = m.Value.Length - (stLen + enLen);
-                Name = m.Value.Substring(stLen,len);
-                OrigStr = m.Value;
-                Start = m.Index;
-                End = m.Index + m.Length;
-                RBStart = Start - order * (stLen + enLen) - lfCount;
-                RBEnd = End - (order +1) * (stLen + enLen) - lfCount;
-                RBLen = RBEnd - RBStart;
-            }   
-
-            public String OrigStr { get; set; }
-            public String Name { get; set; }
-            public int Start { get; set; }
-            public int End { get; set; }
-            public int RBStart    { get; set; }
-            public int RBEnd    { get; set; }
-            public int RBLen { get; set; }
-        }
-
-        private void ProcessContent()
+        private void ProcessContent(int? oldSel)
         {
             StringBuilder sb = new StringBuilder();
             int ind = 0;
@@ -118,23 +141,47 @@ namespace SnippetUtil
             sb.Append(theRest);
 
             mRichTextBox.Text = sb.ToString();
+            SelectField(oldSel);
         }
 
         internal void NextField()
         {
-            
+            selectedFld.Inc();
+            SetSelected();
         }
+
 
         internal void PrevField()
         {
-            
+            selectedFld.Dec();
+            SetSelected();
+        }
+
+        private void SetSelected()
+        {
+            try
+            {
+                
+                if (mHolders.Count != 0) {
+                    var hldr = this.mHolders[selectedFld.val];
+                    mRichTextBox.Focus();
+                    mRichTextBox.Select(hldr.RBStart, hldr.RBLen);
+                    mRichTextBox.SelectionBackColor = Color.Yellow;
+                }
+            }
+            catch (Exception)
+            {
+                throw;
+            }
         }
 
         Rint selectedFld;
-        public void SelectField(int ind)
+        public void SelectField(int? ind=null)
         {
-            var hldr = this.mHolders[ind];
-            mRichTextBox.Select(hldr.RBStart, hldr.RBLen);
+            ind = ind == null ? 0 : ind;
+            selectedFld = new Rint((int)ind, mHolders.Count);
+            //mRichTextBox.SelectAll();
+            SetSelected();
         }
 
         public void HighlightFields()
@@ -144,7 +191,11 @@ namespace SnippetUtil
                 mRichTextBox.Select(h.RBStart, h.RBLen);
                 mRichTextBox.SelectionBackColor = Color.LightSalmon;
             }
-            
+            if (mHolders.Count!=0)
+            {
+                var fst = mHolders.First();
+                mRichTextBox.Select(fst.RBStart, fst.RBLen);
+            }
         }
 
         public void GetFldRange(int ind, out int start, out int end) {

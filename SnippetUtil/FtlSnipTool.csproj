@@ -47,7 +47,25 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="FieldHolder.cs" />
     <Compile Include="FieldManager.cs" />
+    <Compile Include="FtlRichTB.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="FtlRichTB.Designer.cs">
+      <DependentUpon>FtlRichTB.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FTLRichTextBox.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="FtlSnippetsFrm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FtlSnippetsFrm.Designer.cs">
+      <DependentUpon>FtlSnippetsFrm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="InputHandler.cs" />
+    <Compile Include="Rint.cs" />
     <Compile Include="SnippetForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -62,6 +80,9 @@
     <Compile Include="Temp.Designer.cs">
       <DependentUpon>Temp.cs</DependentUpon>
     </Compile>
+    <EmbeddedResource Include="FtlSnippetsFrm.resx">
+      <DependentUpon>FtlSnippetsFrm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>

@@ -12,12 +12,12 @@ using System.Windows.Forms;
 
 namespace SnippetUtil
 {
-    public partial class SnippetForm : Form
+    public partial class FtlSnippetForm : Form
     {
         private const string SnippetFld = ".\\Snippets";
         private FieldManager fldMngr;
 
-        public SnippetForm()
+        public FtlSnippetForm()
         {
             InitializeComponent();
             RefreshSnippets();

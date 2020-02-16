@@ -2,7 +2,7 @@
 
 namespace SnippetUtil
 {
-    partial class SnippetForm
+    partial class FtlSnippetForm
     {
         /// <summary>
         /// Required designer variable.
@@ -35,7 +35,8 @@ namespace SnippetUtil
             this.btnCancel = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
             this.txtSearch = new System.Windows.Forms.TextBox();
-            this.richTextBoxSnippet = new System.Windows.Forms.RichTextBox();
+            //this.richTextBoxSnippet = new System.Windows.Forms.RichTextBox();
+            this.richTextBoxSnippet = new FTLRichTextBox();
             this.SuspendLayout();
             // 
             // txtSnippet
