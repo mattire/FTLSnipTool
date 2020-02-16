@@ -11,5 +11,14 @@ RunSnips(){
     WinWait, Form1
     WinWaitClose, Form1
     Sleep, 50
-    Send, ^v
+	WinGetTitle, WinTitle, A
+	StringLeft, StartStr, WinTitle, 7
+	if(StartStr="MINGW64")
+	{
+		Send, +{insert}
+	}
+	else
+	{
+		Send, ^v
+	}
 }
