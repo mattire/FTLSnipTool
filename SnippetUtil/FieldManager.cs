@@ -71,12 +71,6 @@ namespace SnippetUtil
         {
             var kea = (KeyEventArgs)e;
             mInputHandler.Handle(kea);
-            
-            //Keys.Back
-            //kea.KeyCode== Keys.Left
-            //var ch = (char)kea.KeyValue;
-            //System.Diagnostics.Debug.WriteLine(ch);
-            //fldSessionBldr.Append()
         }
 
         private void FieldManager_TabBackward(object sender, EventArgs e)

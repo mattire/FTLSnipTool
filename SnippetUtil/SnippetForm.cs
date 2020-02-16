@@ -25,6 +25,7 @@ namespace SnippetUtil
             txtSearch.KeyDown += TxtSearch_KeyDown;
             //txtSnippet.Select
             fldMngr.MRichTextBox = richTextBoxSnippet;
+            ((FTLRichTextBox)richTextBoxSnippet).EnterPressed += btnOk_Click;
             txtSearch.Focus();
         }
 

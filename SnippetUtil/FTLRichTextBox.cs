@@ -33,12 +33,19 @@ namespace SnippetUtil
                 //if (!hassel) this.SelectionStart += tabtospaces.Length;
                 e.SuppressKeyPress = true;
             }
-            else {
+            else if (e.KeyCode == Keys.Enter)
+            {
+                e.SuppressKeyPress = true;
+                EnterPressed?.Invoke(this, e);
+            }
+            else
+            {
                 base.OnKeyDown(e);
-                RtbKeyDown?.Invoke(this,e);
+                RtbKeyDown?.Invoke(this, e);
             }
         }
 
+        public event EventHandler EnterPressed;
         public event EventHandler TabForward;
         public event EventHandler TabBackward;
         public event EventHandler RtbKeyDown;
