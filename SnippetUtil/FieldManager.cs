@@ -19,6 +19,19 @@ namespace SnippetUtil
         public static string MStartStr { get; } = "#*";
         public static string MEndStr { get; } = "*#";
 
+        public RichTextBox MRichTextBox
+        {
+            get { return mRichTextBox; }
+            set {
+                mRichTextBox = value;
+                mRichTextBox.KeyDown += MRichTextBox_KeyDown;
+                ((FTLRichTextBox)mRichTextBox).TabForward += FieldManager_TabForward;
+                ((FTLRichTextBox)mRichTextBox).TabBackward += FieldManager_TabBackward;
+                ((FTLRichTextBox)mRichTextBox).RtbKeyDown += FieldManager_KeyDown;
+            }
+        }
+
+
         MatchCollection mMatchCollection;
         private int mStartLen;
         private int mEndLen;
@@ -33,15 +46,17 @@ namespace SnippetUtil
         {
         }
 
-        public FieldManager(string contents, RichTextBox richTextBox)
+        //public FieldManager(string contents, RichTextBox richTextBox) { }
+
+        public void UpdateContents(string contents/*, RichTextBox richTextBox*/)
         {
             mInputHandler = new InputHandler(this);
-            mRichTextBox = richTextBox;
-            mRichTextBox.KeyDown += MRichTextBox_KeyDown;
 
-            ((FTLRichTextBox)mRichTextBox).TabForward  += FieldManager_TabForward;
-            ((FTLRichTextBox)mRichTextBox).TabBackward += FieldManager_TabBackward;
-            ((FTLRichTextBox)mRichTextBox).RtbKeyDown  += FieldManager_KeyDown;
+            //mRichTextBox = richTextBox;
+            //mRichTextBox.KeyDown += MRichTextBox_KeyDown;
+            //((FTLRichTextBox)mRichTextBox).TabForward  += FieldManager_TabForward;
+            //((FTLRichTextBox)mRichTextBox).TabBackward += FieldManager_TabBackward;
+            //((FTLRichTextBox)mRichTextBox).RtbKeyDown  += FieldManager_KeyDown;
 
             this.mContents = contents;
             mStartLen = MStartStrRE.Length;

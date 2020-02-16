@@ -15,7 +15,7 @@ namespace SnippetUtil
     public partial class FtlSnippetForm : Form
     {
         private const string SnippetFld = ".\\Snippets";
-        private FieldManager fldMngr;
+        private FieldManager fldMngr = new FieldManager();
 
         public FtlSnippetForm()
         {
@@ -24,6 +24,7 @@ namespace SnippetUtil
             //txtSearch.KeyPress += new System.Windows.Forms.KeyPressEventHandler(txtSearchKeyPress);
             txtSearch.KeyDown += TxtSearch_KeyDown;
             //txtSnippet.Select
+            fldMngr.MRichTextBox = richTextBoxSnippet;
             txtSearch.Focus();
         }
 
@@ -38,7 +39,8 @@ namespace SnippetUtil
                 
                 txtSnippet.Text = contents;
 
-                fldMngr = new FieldManager(contents, richTextBoxSnippet);
+                fldMngr.UpdateContents(contents);
+                //fldMngr = new FieldManager(contents, richTextBoxSnippet);
                 fldMngr.HighlightFields();
                 //var caps = CaptureFields(contents);
                 //foreach (Capture c in caps)
