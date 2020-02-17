@@ -39,7 +39,7 @@ namespace SnippetUtil
                 var contents = File.ReadAllText(path);
                 
                 txtSnippet.Text = contents;
-
+                //fldMngr.
                 fldMngr.UpdateContents(contents);
                 //fldMngr = new FieldManager(contents, richTextBoxSnippet);
                 fldMngr.HighlightFields();

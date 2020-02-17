@@ -82,6 +82,7 @@ namespace SnippetUtil
         private void FieldManager_TabForward(object sender, EventArgs e)
         {
             SessionEnd();
+            HighlightFields();
             NextField();
         }
 
@@ -188,7 +189,8 @@ namespace SnippetUtil
         public void SelectField(int? ind=null)
         {
             ind = ind == null ? 0 : ind;
-            selectedFld = new Rint((int)ind, mHolders.Count);
+            if (ind < mHolders.Count) { selectedFld = new Rint((int)ind, mHolders.Count);
+            } else { selectedFld = new Rint(0, mHolders.Count); }
             //mRichTextBox.SelectAll();
             SetSelected();
         }
