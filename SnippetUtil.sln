@@ -5,6 +5,13 @@ VisualStudioVersion = 15.0.28307.438
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FtlSnipTool", "SnippetUtil\FtlSnipTool.csproj", "{0278A6AF-8BF5-424F-8D15-EE819DB0FA29}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FtlcSnippetCreator", "FtlSnippetCreator\FtlcSnippetCreator.csproj", "{9E741081-F40C-44A5-8FFF-E684B30C18B3}"
+	ProjectSection(ProjectDependencies) = postProject
+		{8689DC1D-C0EB-45CC-A6BC-DF976D33E783} = {8689DC1D-C0EB-45CC-A6BC-DF976D33E783}
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FtlcCommonLib", "FtlcCommonLib\FtlcCommonLib.csproj", "{8689DC1D-C0EB-45CC-A6BC-DF976D33E783}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +22,14 @@ Global
 		{0278A6AF-8BF5-424F-8D15-EE819DB0FA29}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0278A6AF-8BF5-424F-8D15-EE819DB0FA29}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0278A6AF-8BF5-424F-8D15-EE819DB0FA29}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9E741081-F40C-44A5-8FFF-E684B30C18B3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9E741081-F40C-44A5-8FFF-E684B30C18B3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9E741081-F40C-44A5-8FFF-E684B30C18B3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9E741081-F40C-44A5-8FFF-E684B30C18B3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8689DC1D-C0EB-45CC-A6BC-DF976D33E783}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8689DC1D-C0EB-45CC-A6BC-DF976D33E783}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8689DC1D-C0EB-45CC-A6BC-DF976D33E783}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8689DC1D-C0EB-45CC-A6BC-DF976D33E783}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
