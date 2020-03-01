@@ -12,11 +12,22 @@ namespace SnippetUtil
         /// The main entry point for the application.
         /// </summary>
         [STAThread]
-        static void Main()
+        static void Main(string[] args)
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new FtlSnippetForm());
+            if (args.Length == 2) {
+                try
+                {
+                    FtlSnippetForm.StartX = int.Parse(args[0]);
+                    FtlSnippetForm.StartY = int.Parse(args[1]);
+                }
+                catch (Exception)
+                {
+                }
+            }
+            var form = new FtlSnippetForm();
+            Application.Run(form);
         }
     }
 }

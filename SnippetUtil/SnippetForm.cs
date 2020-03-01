@@ -17,6 +17,9 @@ namespace SnippetUtil
         private const string SnippetFld = ".\\Snippets";
         private FieldManager fldMngr = new FieldManager();
 
+        static public int? StartX { get; internal set; }
+        static public int? StartY { get; internal set; }
+
         public FtlSnippetForm()
         {
             InitializeComponent();
@@ -27,6 +30,14 @@ namespace SnippetUtil
             fldMngr.MRichTextBox = richTextBoxSnippet;
             ((FTLRichTextBox)richTextBoxSnippet).EnterPressed += btnOk_Click;
             txtSearch.Focus();
+            if (StartX != null && StartY != null)
+            {
+                StartPosition = FormStartPosition.Manual;
+                Location = new Point(100, 100);
+            }
+            else {
+                StartPosition = FormStartPosition.CenterScreen;
+            }
         }
 
         private void TxtSearch_KeyDown(object sender, KeyEventArgs e)
