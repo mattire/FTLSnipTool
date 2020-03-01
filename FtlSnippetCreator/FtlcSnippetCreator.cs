@@ -68,20 +68,21 @@ namespace FtlSnippetCreator
 
             var allTxt = richTextBox1.Text;
             var selTxt = richTextBox1.SelectedText;
-            var selLen = richTextBox1.SelectionLength;
-            var selStart = richTextBox1.SelectionStart;
-            var fstPart = allTxt.Substring(0, selStart);
-            var lstPart = allTxt.Substring(selStart + selLen);
+            //var selStart = richTextBox1.SelectionStart;
 
-            var fldTxt = $"{Constants.MStartStr}{selTxt}{Constants.MEndStr}";
-            var fldHldr = new FieldHolder(selStart, selTxt, fldTxt);
+            var fhs = FieldHolder.Occurrences2Holders(MPlainText, selTxt);
 
-            mFldHolders.Add(fldHldr);
+            //var fldTxt = $"{Constants.MStartStr}{selTxt}{Constants.MEndStr}";
+            //var fldHldr = new 
+            //    FieldHolder(selStart, selTxt, fldTxt);
+
+            //mFldHolders.Add(fldHldr);
+            var occur = mFldHolders.FirstOrDefault(h => h.SelTxt == selTxt);
+            if (occur == null) {
+                mFldHolders.AddRange(fhs);
+            }
 
             GenNewFldTxt();
-
-            //FieldsText = fstPart + fldTxt + lstPart;
-            //richTextBox2.Text = FieldsText;
         }
 
         private void GenNewFldTxt()
