@@ -57,8 +57,9 @@ namespace FtlSnippetCreator
                                                 chr == ch).Count();
             };
             var lfCount = CountOfCharsBeforeInd(index, '\n');
-            var crCount = CountOfCharsBeforeInd(index, '\r');
-            return lfCount + crCount;
+            //var crCount = CountOfCharsBeforeInd(index, '\r');
+            //return lfCount;// + crCount;
+            return 0;
         }
 
         private void toFieldToolStripMenuItem_Click(object sender, EventArgs e)
