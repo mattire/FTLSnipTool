@@ -23,12 +23,44 @@ ClipboardStartsWithTab()
     ;bgn := clipboard
     ;source := clipboard
     ;bgn := StringLeft, bgn, source, 5
-    bgn := SubStr(clipboard, 1, 5)
-    if(bgn=="{tab}")
+    ; StartsWith(clipboard, "{tab}`r`n")
+    
+    if(StartsWith(clipboard, "{tab}`r`n"))
+    {
+        rest := SubStr(clipboard, StrLen("{tab}`r`n"))
+        MsgBox, %rest%
+        MsgBox, Bingo2!
+    }
+    
+    bgn := SubStr(clipboard, 1, 7)
+    if(bgn=="{tab}`r`n")
     {
         MsgBox, Bingo!
+        theRest := SubStr(clipboard, 8)
+        ; Send, %theRest%    
+        arr := StrSplit(theRest,"`n")
+        Loop % arr.MaxIndex()
+        {
+            txt := arr[A_Index]
+            Send, %txt%
+            Send, {tab}
+        }
     } else {
         MsgBox, %bgn%    
+    }
+    
+}
+
+StartsWith(str, startsStr)
+{
+    len := StrLen(startsStr)
+    MsgBox, %len%
+    start := SubStr(str, 1, len)
+    MsgBox, %start%
+    if(start == startsStr){
+        return true
+    } else {
+        return false
     }
 }
 
