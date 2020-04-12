@@ -4,20 +4,23 @@
 return
 ^r::reload
 
-^,::RunSnips()
+^Space::RunSnips()
++^Space::RunSnipCreator()
 
-^.::
-	MsgBox, %A_CaretX% %A_CaretY%
-	; VarSetCapacity(GuiThreadInfo, 48)
-	; NumPut(48, GuiThreadInfo,,"UInt")
-	; 
-	; DllCall("GetGUIThreadInfo", int, 0, ptr, &GuiThreadInfo)
-	; 
-	; left := NumGet(&GuiThreadInfo+8*4)
-	; top := NumGet(&GuiThreadInfo+9*4)
-	; 
-	; MsgBox, %left% %top%
-return
+; ^,::RunSnips()
+
+; ^.::
+	; MsgBox, %A_CaretX% %A_CaretY%
+;	; VarSetCapacity(GuiThreadInfo, 48)
+;	; NumPut(48, GuiThreadInfo,,"UInt")
+;	; 
+;	; DllCall("GetGUIThreadInfo", int, 0, ptr, &GuiThreadInfo)
+;	; 
+;	; left := NumGet(&GuiThreadInfo+8*4)
+;	; top := NumGet(&GuiThreadInfo+9*4)
+;	; 
+;	; MsgBox, %left% %top%
+; return
 
 RunSnips(){
     Run %A_ScriptDir%\SnippetUtil.exe
@@ -34,4 +37,9 @@ RunSnips(){
 	{
 		Send, ^v
 	}
+}
+
+
+RunSnipCreator() {
+    Run %A_ScriptDir%\FtlSnippetCreator.exe
 }
