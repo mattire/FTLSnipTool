@@ -17,11 +17,14 @@ namespace SnippetUtil
         private const string SnippetFld = ".\\Snippets";
         private FieldManager fldMngr = new FieldManager();
 
+        private string mClipboardOrigTxt;
+
         static public int? StartX { get; internal set; }
         static public int? StartY { get; internal set; }
-
-        public FtlSnippetForm()
+        
+        public FtlSnippetForm(string clipTxt)
         {
+            mClipboardOrigTxt = clipTxt;
             InitializeComponent();
             RefreshSnippets();
             //txtSearch.KeyPress += new System.Windows.Forms.KeyPressEventHandler(txtSearchKeyPress);
@@ -48,11 +51,15 @@ namespace SnippetUtil
                 var fn = txtSearch.Text + ".txt";
                 var path = Path.Combine(SnippetFld, fn);
                 var contents = File.ReadAllText(path);
-                
+
+                contents = HandleSurroundScripts(contents);
+
                 txtSnippet.Text = contents;
                 //fldMngr.
                 fldMngr.UpdateContents(contents);
+
                 //fldMngr = new FieldManager(contents, richTextBoxSnippet);
+
                 fldMngr.HighlightFields();
                 //var caps = CaptureFields(contents);
                 //foreach (Capture c in caps)
@@ -62,6 +69,18 @@ namespace SnippetUtil
                 //}
                 richTextBoxSnippet.Focus();
             }
+        }
+
+        private string HandleSurroundScripts(string contents)
+        {
+            var searchStr = FieldManager.MStartStr + "SurroundContent" + FieldManager.MEndStr;
+            if (contents.Contains(searchStr) && mClipboardOrigTxt!="") {
+                contents = contents.Replace(searchStr, mClipboardOrigTxt);
+            }
+            return contents;
+            //fldMngr.MHolders.ForEach(h => System.Diagnostics.Debug.WriteLine(h.OrigStr));
+            //fldMngr.MHolders.ForEach(h => System.Diagnostics.Debug.WriteLine(h.Name));
+            //var sc = fldMngr.MHolders.FirstOrDefault(h => h.Name == "SurroundContent");
         }
 
         private void RefreshSnippets()
@@ -97,7 +116,8 @@ namespace SnippetUtil
         
         private void btnCancel_Click(object sender, EventArgs e)
         {
-
+            Clipboard.SetText(mClipboardOrigTxt);
+            this.Close();
         }
 
 

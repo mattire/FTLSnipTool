@@ -23,6 +23,7 @@ return
 ; return
 
 RunSnips(){
+    Send, ^c
     Run %A_ScriptDir%\SnippetUtil.exe
     WinWait, Form1
     WinWaitClose, Form1

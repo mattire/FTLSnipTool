@@ -22,6 +22,7 @@ namespace FtlSnippetCreator
         public string MDisplayTxt { get; set; }
         private ContentMngr ContentMngr { get; set; }
 
+
         public FtlcSnippetCreator()
         {
             InitializeComponent();

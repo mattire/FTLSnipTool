@@ -31,6 +31,7 @@ namespace SnippetUtil
             }
         }
 
+        internal List<FieldHolder> MHolders { get => mHolders; set => mHolders = value; }
 
         MatchCollection mMatchCollection;
         private int mStartLen;

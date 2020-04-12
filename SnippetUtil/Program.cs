@@ -15,6 +15,11 @@ namespace SnippetUtil
         static void Main(string[] args)
         {
             Application.EnableVisualStyles();
+
+            string origTxt = "";
+            if (Clipboard.ContainsText()) {
+                origTxt = Clipboard.GetText();
+            }
             Application.SetCompatibleTextRenderingDefault(false);
             if (args.Length == 2) {
                 try
@@ -26,7 +31,7 @@ namespace SnippetUtil
                 {
                 }
             }
-            var form = new FtlSnippetForm();
+            var form = new FtlSnippetForm(origTxt);
             Application.Run(form);
         }
     }
