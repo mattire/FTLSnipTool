@@ -10,7 +10,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FtlcSnippetCreator", "FtlSn
 		{8689DC1D-C0EB-45CC-A6BC-DF976D33E783} = {8689DC1D-C0EB-45CC-A6BC-DF976D33E783}
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FtlcCommonLib", "FtlcCommonLib\FtlcCommonLib.csproj", "{8689DC1D-C0EB-45CC-A6BC-DF976D33E783}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FtlcCommonLib", "FtlcCommonLib\FtlcCommonLib.csproj", "{8689DC1D-C0EB-45CC-A6BC-DF976D33E783}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Scrapboard", "Scrapboard\Scrapboard.csproj", "{585B0377-385F-404A-A4DB-7262D638D849}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -30,6 +32,10 @@ Global
 		{8689DC1D-C0EB-45CC-A6BC-DF976D33E783}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8689DC1D-C0EB-45CC-A6BC-DF976D33E783}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8689DC1D-C0EB-45CC-A6BC-DF976D33E783}.Release|Any CPU.Build.0 = Release|Any CPU
+		{585B0377-385F-404A-A4DB-7262D638D849}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{585B0377-385F-404A-A4DB-7262D638D849}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{585B0377-385F-404A-A4DB-7262D638D849}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{585B0377-385F-404A-A4DB-7262D638D849}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
