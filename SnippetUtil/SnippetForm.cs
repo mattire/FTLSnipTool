@@ -110,9 +110,9 @@ namespace SnippetUtil
         {
             //Clipboard.GetText();
             Clipboard.SetText(richTextBoxSnippet.Text);
+            fldMngr.AddCurrentFldToSuggestion();
             fldMngr.MSuggestMngr.Save();
             this.Dispose();
-            
         }
 
         private void label1_Click(object sender, EventArgs e)

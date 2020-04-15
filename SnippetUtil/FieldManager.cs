@@ -142,6 +142,15 @@ namespace SnippetUtil
             }
         }
 
+        public void AddCurrentFldToSuggestion()
+        {
+            var hldr = mHolders[selectedFld.val];
+            var newFldLen = mInputHandler.Len;
+            mSuggestMngr.AddSuggestion(
+                selectedFld.val, 
+                mRichTextBox.Text.Substring(hldr.RBStart, newFldLen)); 
+        }
+
         public void Refresh(string newContents)
         {
             this.mContents = newContents;

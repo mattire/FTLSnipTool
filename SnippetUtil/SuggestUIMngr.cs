@@ -38,7 +38,7 @@ namespace SnippetUtil
 
                 //var offset = new Point() { X = 5, Y = 50 };
                 var offset = new Point() { X = 5, Y = 14 };
-                var p1 = Utils.Add(/*this.Location, mRichTextBox.Location,*/ selPos, offset);
+                var p1 = Utils.Add(/*this.Location,*/ mRichTextBox.Location, selPos, offset);
 
                 mListBox.Location = p1;
                 mListBox.Visible = true;
