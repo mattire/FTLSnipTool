@@ -16,22 +16,28 @@ namespace SnippetUtil
     {
         private const string SnippetFld = ".\\Snippets";
         private FieldManager fldMngr = new FieldManager();
+        private SuggestUIMngr mSuggestUIMngr;
 
         private string mClipboardOrigTxt;
 
         static public int? StartX { get; internal set; }
         static public int? StartY { get; internal set; }
-        
+        internal SuggestUIMngr MSuggestUIMngr { get => mSuggestUIMngr; set => mSuggestUIMngr = value; }
+
         public FtlSnippetForm(string clipTxt)
         {
             mClipboardOrigTxt = clipTxt;
             InitializeComponent();
+            listBox1.Visible = false;
             RefreshSnippets();
             //txtSearch.KeyPress += new System.Windows.Forms.KeyPressEventHandler(txtSearchKeyPress);
             txtSearch.KeyDown += TxtSearch_KeyDown;
             //txtSnippet.Select
             fldMngr.MRichTextBox = richTextBoxSnippet;
             ((FTLRichTextBox)richTextBoxSnippet).EnterPressed += btnOk_Click;
+
+            mSuggestUIMngr = new SuggestUIMngr(richTextBoxSnippet, listBox1);
+
             txtSearch.Focus();
             if (StartX != null && StartY != null)
             {

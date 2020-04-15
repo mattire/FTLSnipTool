@@ -16,16 +16,30 @@ namespace SnippetUtil
         private SuggestionMngr mSuggestMngr;
 
         public static string MStartStrRE { get; } = "#\\*";
-        public static string MEndStrRE   { get; } = "\\*#";
+        public static string MEndStrRE { get; } = "\\*#";
         public static string MStartStr { get; } = "#*";
         public static string MEndStr { get; } = "*#";
+        private int myVar;
 
-        public List<string> CurrentSuggestions { get; set; }
+        public int MyProperty
+        {
+            get { return myVar; }
+            set { myVar = value; }
+        }
+
+        public List<string> CurrentSuggestions {
+            get => _currentSuggestions;
+            set {
+                _currentSuggestions = value;
+                SuggestUIMngr.Current?.SetSuggestions(_currentSuggestions);
+            }
+        }
 
         public RichTextBox MRichTextBox
         {
             get { return mRichTextBox; }
-            set {
+            set
+            {
                 mRichTextBox = value;
                 mRichTextBox.KeyDown += MRichTextBox_KeyDown;
                 ((FTLRichTextBox)mRichTextBox).TabForward += FieldManager_TabForward;
@@ -95,7 +109,8 @@ namespace SnippetUtil
 
         private void SessionEnd()
         {
-            if (mInputHandler.Changed) {
+            if (mInputHandler.Changed)
+            {
                 //var newFldLen = mInputHandler.FldLen;
                 var newFldLen = mInputHandler.Len;
                 var currentInt = selectedFld.val;
@@ -156,7 +171,8 @@ namespace SnippetUtil
             {
                 theRest = mContents.Substring(mHolders.Last().End);
             }
-            else {
+            else
+            {
                 theRest = mContents;
             }
             sb.Append(theRest);
@@ -182,8 +198,9 @@ namespace SnippetUtil
         {
             try
             {
-                
-                if (mHolders.Count != 0) {
+
+                if (mHolders.Count != 0)
+                {
                     var hldr = this.mHolders[selectedFld.val];
                     mRichTextBox.Focus();
                     mRichTextBox.Select(hldr.RBStart, hldr.RBLen);
@@ -197,11 +214,16 @@ namespace SnippetUtil
         }
 
         Rint selectedFld;
-        public void SelectField(int? ind=null)
+        private List<string> _currentSuggestions;
+
+        public void SelectField(int? ind = null)
         {
             ind = ind == null ? 0 : ind;
-            if (ind < mHolders.Count) { selectedFld = new Rint((int)ind, mHolders.Count);
-            } else { selectedFld = new Rint(0, mHolders.Count); }
+            if (ind < mHolders.Count)
+            {
+                selectedFld = new Rint((int)ind, mHolders.Count);
+            }
+            else { selectedFld = new Rint(0, mHolders.Count); }
             //mRichTextBox.SelectAll();
             SetSelected();
         }
@@ -213,7 +235,7 @@ namespace SnippetUtil
                 mRichTextBox.Select(h.RBStart, h.RBLen);
                 mRichTextBox.SelectionBackColor = Color.LightSalmon;
             }
-            if (mHolders.Count!=0)
+            if (mHolders.Count != 0)
             {
                 var fst = mHolders.First();
                 mRichTextBox.Select(fst.RBStart, fst.RBLen);

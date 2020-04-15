@@ -35,8 +35,8 @@ namespace SnippetUtil
             this.btnCancel = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
             this.txtSearch = new System.Windows.Forms.TextBox();
-            //this.richTextBoxSnippet = new System.Windows.Forms.RichTextBox();
-            this.richTextBoxSnippet = new FTLRichTextBox();
+            this.richTextBoxSnippet = new SnippetUtil.FTLRichTextBox();
+            this.listBox1 = new System.Windows.Forms.ListBox();
             this.SuspendLayout();
             // 
             // txtSnippet
@@ -119,18 +119,28 @@ namespace SnippetUtil
             this.richTextBoxSnippet.Enter += new System.EventHandler(this.RbEntered);
             this.richTextBoxSnippet.KeyDown += new System.Windows.Forms.KeyEventHandler(this.rtbSnipKeyDown);
             // 
-            // SnippetForm
+            // listBox1
+            // 
+            this.listBox1.FormattingEnabled = true;
+            this.listBox1.ItemHeight = 24;
+            this.listBox1.Location = new System.Drawing.Point(28, 237);
+            this.listBox1.Name = "listBox1";
+            this.listBox1.Size = new System.Drawing.Size(209, 124);
+            this.listBox1.TabIndex = 9;
+            // 
+            // FtlSnippetForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(11F, 24F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1163, 676);
+            this.Controls.Add(this.listBox1);
             this.Controls.Add(this.richTextBoxSnippet);
             this.Controls.Add(this.txtSearch);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.btnCancel);
             this.Controls.Add(this.btnOk);
             this.Controls.Add(this.txtSnippet);
-            this.Name = "SnippetForm";
+            this.Name = "FtlSnippetForm";
             this.Opacity = 0.95D;
             this.Text = "Form1";
             this.ResumeLayout(false);
@@ -149,7 +159,8 @@ namespace SnippetUtil
         private System.Windows.Forms.Button btnCancel;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.TextBox txtSearch;
-        private System.Windows.Forms.RichTextBox richTextBoxSnippet;
+        private System.Windows.Forms.ListBox listBox1;
+        private FTLRichTextBox richTextBoxSnippet;
     }
 }
 

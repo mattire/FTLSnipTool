@@ -44,16 +44,6 @@ namespace Scrapboard
                 var p1 = Utils.Add(/*this.Location, richTextBox1.Location,*/ selPos, offset);
 
                 suggestListBox1.Location = p1;
-                //suggestListBox1.Location = selPos;
-
-                //suggestListBox1.DoneAction = (s) => {
-                //    var pos = richTextBox1.SelectionStart; // caret position??
-                //
-                //    richTextBox1.SelectionStart = pos;
-                //    richTextBox1.SelectionLength = 0;
-                //    richTextBox1.SelectedText = s;
-                //    //richTextBox1.Text.Insert(pos, s);
-                //};
                 suggestListBox1.Visible = true;
 
                 //SuggestionsBox sb = new SuggestionsBox((s)=> {

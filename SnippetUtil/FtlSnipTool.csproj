@@ -75,6 +75,7 @@
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SuggestionMngr.cs" />
+    <Compile Include="SuggestUIMngr.cs" />
     <Compile Include="Temp.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -115,6 +116,12 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\FtlcCommonLib\FtlcCommonLib.csproj">
+      <Project>{8689dc1d-c0eb-45cc-a6bc-df976d33e783}</Project>
+      <Name>FtlcCommonLib</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

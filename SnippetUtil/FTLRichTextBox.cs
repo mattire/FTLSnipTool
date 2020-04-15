@@ -35,8 +35,12 @@ namespace SnippetUtil
             }
             else if (e.KeyCode == Keys.Enter)
             {
+                if(SuggestUIMngr.Current?.mListBox.Visible == true){
+                    SuggestUIMngr.Current.HandleSuggestBoxKeys(null, e);
+                } else {
+                    EnterPressed?.Invoke(this, e);
+                }
                 e.SuppressKeyPress = true;
-                EnterPressed?.Invoke(this, e);
             }
             else
             {
