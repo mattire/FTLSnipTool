@@ -21,6 +21,7 @@ namespace FtlcCommonLib
         {
             mFldMngr = fieldManager;
         }
+
         public void Handle(KeyEventArgs kea)
         {
             Changed = true;
@@ -43,14 +44,10 @@ namespace FtlcCommonLib
                 }
             }
         }
-
-        internal void AddSuggestion(string newFldContent)
+        
+        internal void Handle(string txt)
         {
-
-        }
-
-        internal List<string> GetSuggestions() {
-            return new List<string>();
+            Len = txt.Length;
         }
     }
 }

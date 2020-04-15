@@ -57,8 +57,10 @@ namespace SnippetUtil
         private RichTextBox mRichTextBox;
         private List<FieldHolder> mHolders;
 
+        public static FieldManager Current;
         public FieldManager()
         {
+            Current = this;
         }
 
         private void MRichTextBox_KeyDown(object sender, KeyEventArgs e)
@@ -94,6 +96,14 @@ namespace SnippetUtil
             mInputHandler.Handle(kea);
         }
 
+        internal void HandleSuggestionTxt(string txt)
+        {
+            var hldr = this.mHolders[selectedFld.val];
+            mRichTextBox.Focus();
+            mRichTextBox.Select(hldr.RBStart, hldr.RBLen);
+            mRichTextBox.SelectedText = txt;
+            mInputHandler.Handle(txt);
+        }
         private void FieldManager_TabBackward(object sender, EventArgs e)
         {
             SessionEnd();

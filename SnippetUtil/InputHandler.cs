@@ -43,5 +43,10 @@ namespace SnippetUtil
                 }
             }
         }
+
+        internal void Handle(string txt)
+        {
+            Len = txt.Length;
+        }
     }
 }

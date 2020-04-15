@@ -78,13 +78,15 @@ namespace SnippetUtil
                 {
                     var sel = mListBox.SelectedItem.ToString();
                     System.Diagnostics.Debug.WriteLine(sel);
-                    var pos = mRichTextBox.SelectionStart;
-
-                    mRichTextBox.SelectionStart = pos;
-                    mRichTextBox.SelectionLength = 0;
-                    mRichTextBox.SelectedText = sel;
+                    //var pos = mRichTextBox.SelectionStart;
+                    //
+                    //mRichTextBox.SelectionStart = pos;
+                    //mRichTextBox.SelectionLength = 0;
+                    //
+                    //mRichTextBox.SelectedText = sel;
                     //richTextBox1.Text.Insert(pos, sel);
                     mListBox.Visible = false;
+                    FieldManager.Current?.HandleSuggestionTxt(sel);
                     e.Handled = true;
                 }
             }

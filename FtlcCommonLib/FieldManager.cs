@@ -40,8 +40,10 @@ namespace FtlcCommonLib
         private RichTextBox mRichTextBox;
         private List<FieldHolder> mHolders;
 
+        public static FieldManager Current;
         public FieldManager()
         {
+            Current = this;
         }
 
         private void MRichTextBox_KeyDown(object sender, KeyEventArgs e)
@@ -75,6 +77,10 @@ namespace FtlcCommonLib
             mInputHandler.Handle(kea);
         }
 
+        public void EnterSuggestionTxt(string txt) {
+            mInputHandler.Handle(txt);
+        }
+
         private void FieldManager_TabBackward(object sender, EventArgs e)
         {
             SessionEnd();
@@ -97,7 +103,6 @@ namespace FtlcCommonLib
                 var hldr = mHolders[currentInt];
                 var newFldContent = mRichTextBox.Text.Substring(hldr.RBStart, newFldLen);
                 newFldContent = newFldContent.Replace("\n", "");
-                mInputHandler.AddSuggestion(newFldContent);
                 var newFldCntntWSE = MStartStr + newFldContent + MEndStr;
                 // construct new content
                 var fstPart = mContents.Substring(0, hldr.Start);
