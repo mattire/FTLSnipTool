@@ -13,11 +13,14 @@ namespace SnippetUtil
     partial class FieldManager
     {
         private string mContents;
+        private SuggestionMngr mSuggestMngr;
 
         public static string MStartStrRE { get; } = "#\\*";
         public static string MEndStrRE   { get; } = "\\*#";
         public static string MStartStr { get; } = "#*";
         public static string MEndStr { get; } = "*#";
+
+        public List<string> CurrentSuggestions { get; set; }
 
         public RichTextBox MRichTextBox
         {
@@ -32,6 +35,7 @@ namespace SnippetUtil
         }
 
         internal List<FieldHolder> MHolders { get => mHolders; set => mHolders = value; }
+        internal SuggestionMngr MSuggestMngr { get => mSuggestMngr; set => mSuggestMngr = value; }
 
         MatchCollection mMatchCollection;
         private int mStartLen;
@@ -49,7 +53,7 @@ namespace SnippetUtil
 
         //public FieldManager(string contents, RichTextBox richTextBox) { }
 
-        public void UpdateContents(string contents/*, RichTextBox richTextBox*/)
+        public void UpdateContents(string contents, string snipPath)
         {
             mInputHandler = new InputHandler(this);
 
@@ -60,9 +64,11 @@ namespace SnippetUtil
             //((FTLRichTextBox)mRichTextBox).RtbKeyDown  += FieldManager_KeyDown;
 
             this.mContents = contents;
+            mSuggestMngr = new SuggestionMngr(snipPath);
             mStartLen = MStartStrRE.Length;
             mEndLen = MEndStrRE.Length;
             Refresh();
+            mSuggestMngr.SetOrigFlds(mMatchCollection);
         }
 
         //int sessionStrLen=0;
@@ -96,6 +102,8 @@ namespace SnippetUtil
                 var hldr = mHolders[currentInt];
                 var newFldContent = mRichTextBox.Text.Substring(hldr.RBStart, newFldLen);
                 newFldContent = newFldContent.Replace("\n", "");
+
+                mSuggestMngr.AddSuggestion(selectedFld.val, newFldContent);
                 var newFldCntntWSE = MStartStr + newFldContent + MEndStr;
                 // construct new content
                 var fstPart = mContents.Substring(0, hldr.Start);
@@ -103,6 +111,7 @@ namespace SnippetUtil
                 var lstPart = mContents.Substring(hldr.End, mContents.Length - hldr.End);
                 var newContent = fstPart + mdlPart + lstPart;
                 System.Diagnostics.Debug.WriteLine(newContent);
+
                 Refresh(newContent);
                 mInputHandler.Len = 0;
             }
@@ -121,6 +130,7 @@ namespace SnippetUtil
             mMatchCollection = rx.Matches(this.mContents);
             ProcessContent(oldSel);
             mInputHandler.Changed = false;
+            mSuggestMngr.UpdCurrentNamesMap(mMatchCollection);
         }
 
         private void ProcessContent(int? oldSel)
@@ -208,17 +218,19 @@ namespace SnippetUtil
                 var fst = mHolders.First();
                 mRichTextBox.Select(fst.RBStart, fst.RBLen);
             }
+
+            CurrentSuggestions = mSuggestMngr.GetSuggestions(selectedFld.val);
         }
 
-        public void GetFldRange(int ind, out int start, out int end) {
-            if (mMatchCollection.Count < ind) {
-                start = -1;
-                end = -1;
-                return;
-            }
-            var c = mMatchCollection[ind];
-            start = c.Index + mStartLen;
-            end = c.Index +  c.Length - mEndLen;
-        }
+        //public void GetFldRange(int ind, out int start, out int end) {
+        //    if (mMatchCollection.Count < ind) {
+        //        start = -1;
+        //        end = -1;
+        //        return;
+        //    }
+        //    var c = mMatchCollection[ind];
+        //    start = c.Index + mStartLen;
+        //    end = c.Index +  c.Length - mEndLen;
+        //}
     }
 }

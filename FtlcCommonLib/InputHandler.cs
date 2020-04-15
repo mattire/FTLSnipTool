@@ -16,7 +16,7 @@ namespace FtlcCommonLib
         public int Len { get => len; set => len = value; }
         public int FldLen { get => len -1; }
 
-        public event EventHandler SessionEnd;
+        //public event EventHandler SessionEnd;
         public InputHandler(FieldManager fieldManager)
         {
             mFldMngr = fieldManager;
@@ -42,6 +42,15 @@ namespace FtlcCommonLib
                     //mFldMngr.SessionEnd();
                 }
             }
+        }
+
+        internal void AddSuggestion(string newFldContent)
+        {
+
+        }
+
+        internal List<string> GetSuggestions() {
+            return new List<string>();
         }
     }
 }

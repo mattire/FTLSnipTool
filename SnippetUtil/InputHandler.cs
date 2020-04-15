@@ -16,7 +16,7 @@ namespace SnippetUtil
         public int Len { get => len; set => len = value; }
         public int FldLen { get => len -1; }
 
-        public event EventHandler SessionEnd;
+        //public event EventHandler SessionEnd;
         public InputHandler(FieldManager fieldManager)
         {
             mFldMngr = fieldManager;

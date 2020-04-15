@@ -56,7 +56,7 @@ namespace SnippetUtil
 
                 txtSnippet.Text = contents;
                 //fldMngr.
-                fldMngr.UpdateContents(contents);
+                fldMngr.UpdateContents(contents, path);
 
                 //fldMngr = new FieldManager(contents, richTextBoxSnippet);
 
@@ -104,6 +104,7 @@ namespace SnippetUtil
         {
             //Clipboard.GetText();
             Clipboard.SetText(richTextBoxSnippet.Text);
+            fldMngr.MSuggestMngr.Save();
             this.Dispose();
             
         }

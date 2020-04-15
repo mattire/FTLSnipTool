@@ -97,6 +97,7 @@ namespace FtlcCommonLib
                 var hldr = mHolders[currentInt];
                 var newFldContent = mRichTextBox.Text.Substring(hldr.RBStart, newFldLen);
                 newFldContent = newFldContent.Replace("\n", "");
+                mInputHandler.AddSuggestion(newFldContent);
                 var newFldCntntWSE = MStartStr + newFldContent + MEndStr;
                 // construct new content
                 var fstPart = mContents.Substring(0, hldr.Start);
