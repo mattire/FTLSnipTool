@@ -12,11 +12,18 @@ namespace Scrapboard
 {
     public partial class Form1 : Form
     {
+        public static RichTextBox RichTextBox1;
+        
         public Form1()
         {
             InitializeComponent();
 
             richTextBox1.Text = "Some txt to get \nStarted";
+            RichTextBox1 = richTextBox1;
+            //listBox1.Visible = false;
+            //new List<string>() { "ad", "afaw", "afaew" }.ForEach((s) => { listBox1.Items.Add(s); });
+            suggestListBox1.Visible = false;
+            new List<string>() { "ad", "afaw", "afaew" }.ForEach((s) => { suggestListBox1.Items.Add(s); });
 
             richTextBox1.KeyDown += RichTextBox1_KeyDown;
         }
@@ -30,20 +37,29 @@ namespace Scrapboard
                 var offset = new Point() { X = 5, Y = 50 };
                 var p1 = Utils.Add(this.Location, richTextBox1.Location, selPos, offset);
 
-                SuggestionsBox sb = new SuggestionsBox((s)=> {
+                suggestListBox1.Location = p1;
+                
+                suggestListBox1.DoneAction = (s) => {
                     var pos = richTextBox1.SelectionStart; // caret position??
-                    
+
                     richTextBox1.SelectionStart = pos;
                     richTextBox1.SelectionLength = 0;
                     richTextBox1.SelectedText = s;
                     //richTextBox1.Text.Insert(pos, s);
-                }, p1);
+                };
+                suggestListBox1.Visible = true;
 
-                //richTextBox1.Location
-                //var p = richTextBox1.Location;
-                //System.Diagnostics.Debug.WriteLine(p.X + " " + p.Y);
-                //sb.Location = p;
-                sb.Show();
+                //SuggestionsBox sb = new SuggestionsBox((s)=> {
+                //    var pos = richTextBox1.SelectionStart; // caret position??
+                //    
+                //    richTextBox1.SelectionStart = pos;
+                //    richTextBox1.SelectionLength = 0;
+                //    richTextBox1.SelectedText = s;
+                //    //richTextBox1.Text.Insert(pos, s);
+                //}, p1);
+                //sb.Show();
+
+                
             }
         }
 

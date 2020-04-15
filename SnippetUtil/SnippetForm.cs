@@ -117,7 +117,8 @@ namespace SnippetUtil
         
         private void btnCancel_Click(object sender, EventArgs e)
         {
-            Clipboard.SetText(mClipboardOrigTxt);
+            //Clipboard.SetText(mClipboardOrigTxt);
+            Clipboard.SetText("");
             this.Close();
         }
 

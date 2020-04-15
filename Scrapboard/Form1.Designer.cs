@@ -31,6 +31,7 @@
             this.richTextBox1 = new System.Windows.Forms.RichTextBox();
             this.comboBox1 = new System.Windows.Forms.ComboBox();
             this.listBox1 = new System.Windows.Forms.ListBox();
+            this.suggestListBox1 = new Scrapboard.SuggestListBox();
             this.SuspendLayout();
             // 
             // richTextBox1
@@ -55,14 +56,25 @@
             this.listBox1.ItemHeight = 24;
             this.listBox1.Location = new System.Drawing.Point(558, 105);
             this.listBox1.Name = "listBox1";
-            this.listBox1.Size = new System.Drawing.Size(206, 196);
+            this.listBox1.Size = new System.Drawing.Size(206, 124);
             this.listBox1.TabIndex = 2;
+            // 
+            // suggestListBox1
+            // 
+            this.suggestListBox1.DoneAction = null;
+            this.suggestListBox1.FormattingEnabled = true;
+            this.suggestListBox1.ItemHeight = 24;
+            this.suggestListBox1.Location = new System.Drawing.Point(558, 241);
+            this.suggestListBox1.Name = "suggestListBox1";
+            this.suggestListBox1.Size = new System.Drawing.Size(198, 124);
+            this.suggestListBox1.TabIndex = 3;
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(11F, 24F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
+            this.Controls.Add(this.suggestListBox1);
             this.Controls.Add(this.listBox1);
             this.Controls.Add(this.comboBox1);
             this.Controls.Add(this.richTextBox1);
@@ -77,6 +89,7 @@
         private System.Windows.Forms.RichTextBox richTextBox1;
         private System.Windows.Forms.ComboBox comboBox1;
         private System.Windows.Forms.ListBox listBox1;
+        private SuggestListBox suggestListBox1;
     }
 }
 
