@@ -146,6 +146,7 @@ namespace SnippetUtil
 
         public void AddCurrentFldToSuggestion()
         {
+            if(selectedFld.val >= mHolders.Count){ return; }
             var hldr = mHolders[selectedFld.val];
             var newFldLen = mInputHandler.Len;
             //mRichTextBox.SelectionChanged

@@ -54,15 +54,20 @@ namespace SnippetUtil
             }
         }
 
+        object loadLock = new object();
         private void LoadPreviousEntries() {
-            var fls = Directory.GetFileSystemEntries(mDir);
-            mSuggestionMap = fls.ToDictionary(
-                (fpath) => Path.GetFileName(fpath), 
-                (fpath) => File.ReadAllLines(fpath).ToList()
-            );
+            lock (loadLock)
+            {
+                var fls = Directory.GetFileSystemEntries(mDir);
+                mSuggestionMap = fls.ToDictionary(
+                    (fpath) => Path.GetFileName(fpath),
+                    (fpath) => File.ReadAllLines(fpath).ToList()
+                ); 
+            }
         }
 
         public List<string> GetSuggestions(int fldInd) {
+            if (fldInd >= mSuggestionMap.Count) { return new List<string>(); } // no params/suggestions
             return mSuggestionMap.ElementAt(fldInd).Value;
         }
 
