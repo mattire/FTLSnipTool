@@ -32,6 +32,7 @@ namespace SnippetUtil
                 //this.SelectedText = tabtospaces;
                 //if (!hassel) this.SelectionStart += tabtospaces.Length;
                 e.SuppressKeyPress = true;
+                e.Handled = true;
             }
             else if (e.KeyCode == Keys.Enter)
             {

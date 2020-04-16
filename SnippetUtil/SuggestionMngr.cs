@@ -67,34 +67,11 @@ namespace SnippetUtil
         }
 
         public void AddSuggestion(int fldInd, string input) {
-            mSuggestionMap.ElementAt(fldInd).Value.Add(input);
+            mSuggestionMap.ElementAt(fldInd).Value.Insert(0, input);
             if (mSuggestionMap.ElementAt(fldInd).Value.Count > 5)
             {
-                mSuggestionMap.ElementAt(fldInd).Value.RemoveAt(0);
+                mSuggestionMap.ElementAt(fldInd).Value.RemoveAt(5);
             }
-
-            //string fldName = "";
-            //var pair = mSuggestionMap.ElementAt(fldInd);
-            //fldName = pair.Key;
-            //pair.Value.Add(input);
-            //if (mSuggestionMap.Keys.ElementAt(fldInd).Contains(fldInd))
-            //{
-            //    mSuggestionMap[fldInd].Add(input);
-            //    fldName = fldInd;
-            //}
-            //else if (mCurrentFldNames != null) {
-            //    var ind = mCurrentFldNames.IndexOf(fldInd);
-            //    if (ind != -1) {
-            //        var pair = mSuggestionMap.ElementAt(ind);
-            //        pair.Value.Add(input);
-            //        fldName = pair.Key;
-            //    }
-            //}
-            //if (fldName != "") {
-            //    if (mSuggestionMap[fldName].Count > 5) {
-            //        mSuggestionMap[fldName].RemoveAt(0);
-            //    }
-            //}
         }
 
         public void UpdCurrentNamesMap(MatchCollection mMatchCollection)

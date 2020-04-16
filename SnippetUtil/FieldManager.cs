@@ -108,6 +108,7 @@ namespace SnippetUtil
         {
             SessionEnd();
             PrevField();
+            UpdateSugsts();
         }
 
         private void FieldManager_TabForward(object sender, EventArgs e)
@@ -115,6 +116,7 @@ namespace SnippetUtil
             SessionEnd();
             HighlightFields();
             NextField();
+            UpdateSugsts();
         }
 
         private void SessionEnd()
@@ -146,6 +148,7 @@ namespace SnippetUtil
         {
             var hldr = mHolders[selectedFld.val];
             var newFldLen = mInputHandler.Len;
+            //mRichTextBox.SelectionChanged
             mSuggestMngr.AddSuggestion(
                 selectedFld.val, 
                 mRichTextBox.Text.Substring(hldr.RBStart, newFldLen)); 
@@ -202,6 +205,7 @@ namespace SnippetUtil
 
         internal void NextField()
         {
+            mRichTextBox.SelectionChanged -= MRichTextBox_SelectionChanged;
             selectedFld.Inc();
             SetSelected();
         }
@@ -209,6 +213,7 @@ namespace SnippetUtil
 
         internal void PrevField()
         {
+            mRichTextBox.SelectionChanged -= MRichTextBox_SelectionChanged;
             selectedFld.Dec();
             SetSelected();
         }
@@ -217,7 +222,7 @@ namespace SnippetUtil
         {
             try
             {
-
+                mRichTextBox.SelectionChanged += MRichTextBox_SelectionChanged;
                 if (mHolders.Count != 0)
                 {
                     var hldr = this.mHolders[selectedFld.val];
@@ -230,6 +235,12 @@ namespace SnippetUtil
             {
                 throw;
             }
+        }
+
+        private void MRichTextBox_SelectionChanged(object sender, EventArgs e)
+        {
+            
+            System.Diagnostics.Debug.WriteLine(mRichTextBox.SelectedText);
         }
 
         Rint selectedFld;
@@ -260,6 +271,10 @@ namespace SnippetUtil
                 mRichTextBox.Select(fst.RBStart, fst.RBLen);
             }
 
+            //CurrentSuggestions = mSuggestMngr.GetSuggestions(selectedFld.val);
+        }
+
+        public void UpdateSugsts() {
             CurrentSuggestions = mSuggestMngr.GetSuggestions(selectedFld.val);
         }
 

@@ -61,18 +61,10 @@ namespace SnippetUtil
                 contents = HandleSurroundScripts(contents);
 
                 txtSnippet.Text = contents;
-                //fldMngr.
                 fldMngr.UpdateContents(contents, path);
 
-                //fldMngr = new FieldManager(contents, richTextBoxSnippet);
-
                 fldMngr.HighlightFields();
-                //var caps = CaptureFields(contents);
-                //foreach (Capture c in caps)
-                //{
-                //    ListViewItem lvi = new ListViewItem(c.Value);
-                //    listViewFields.Items.Add(lvi);
-                //}
+                fldMngr.UpdateSugsts();
                 richTextBoxSnippet.Focus();
             }
         }
