@@ -28,19 +28,56 @@ RunSnips(){
     WinWait, Form1
     WinWaitClose, Form1
     Sleep, 50
-	WinGetTitle, WinTitle, A
-	StringLeft, StartStr, WinTitle, 7
-	if(StartStr="MINGW64")
-	{
-		Send, +{insert}
-	}
-	else
-	{
-		Send, ^v
-	}
+    ;bgn := SubStr(clipboard, 1, 7)
+    ;if(bgn=="{tab}`r`n")
+    ; if(StartsWith(clipboard, "{tab}`r`n"))
+    if(StartsWith(clipboard, "{tab}"))
+    {
+        RunTabSequence()
+    }
+    else
+    {
+        WinGetTitle, WinTitle, A
+        StringLeft, StartStr, WinTitle, 7
+        if(StartStr="MINGW64")
+        {
+            Send, +{insert}
+        }
+        else
+        {
+            Send, ^v
+        }
+    }
 }
 
 
 RunSnipCreator() {
     Run %A_ScriptDir%\FtlSnippetCreator.exe
+}
+
+RunTabSequence() {
+    ; theRest := SubStr(clipboard, 8)
+    ; Send, %theRest% 
+    ; arr := StrSplit(theRest,"`n")
+    arr := StrSplit(clipboard,"`n")
+    arr.Remove(0)
+    Loop % arr.MaxIndex()
+    {
+        txt := arr[A_Index]
+        Send, %txt%
+        Send, {tab}
+    }
+}
+
+StartsWith(str, startsStr)
+{
+    len := StrLen(startsStr) 
+    MsgBox, %len%
+    start := SubStr(str, 1, len)
+    MsgBox, %start%
+    if(start == startsStr){
+        return true
+    } else {
+        return false
+    }
 }
