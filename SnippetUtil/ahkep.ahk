@@ -72,9 +72,9 @@ RunTabSequence() {
 StartsWith(str, startsStr)
 {
     len := StrLen(startsStr) 
-    MsgBox, %len%
+    ; MsgBox, %len%
     start := SubStr(str, 1, len)
-    MsgBox, %start%
+    ; MsgBox, %start%
     if(start == startsStr){
         return true
     } else {
