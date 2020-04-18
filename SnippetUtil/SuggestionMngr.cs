@@ -72,10 +72,15 @@ namespace SnippetUtil
         }
 
         public void AddSuggestion(int fldInd, string input) {
-            mSuggestionMap.ElementAt(fldInd).Value.Insert(0, input);
-            if (mSuggestionMap.ElementAt(fldInd).Value.Count > 5)
+            var suggestions = mSuggestionMap.ElementAt(fldInd).Value;
+            if (suggestions.Contains(input)) {
+                var ind = suggestions.IndexOf(input);
+                suggestions.RemoveAt(ind);
+            }
+            suggestions.Insert(0, input);
+            if (suggestions.Count > 5)
             {
-                mSuggestionMap.ElementAt(fldInd).Value.RemoveAt(5);
+                suggestions.RemoveAt(5);
             }
         }
 
