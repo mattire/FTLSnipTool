@@ -156,5 +156,13 @@ namespace FtlSnippetCreator
                 }
             }
         }
+
+        private void addContentTagToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            var selStart = richTextBox1.SelectionStart;
+            var surroundTag = FieldManager.MStartStr + "SurroundContent" + FieldManager.MEndStr;
+            richTextBox1.SelectionLength = 0;
+            richTextBox1.SelectedText = surroundTag;
+        }
     }
 }
