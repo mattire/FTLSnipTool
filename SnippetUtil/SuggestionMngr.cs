@@ -36,7 +36,7 @@ namespace SnippetUtil
         {
             mMatchCollection = matchCollection;
             mMatchCollection.Cast<Match>().ToList().ForEach((m) => {
-                System.Diagnostics.Debug.WriteLine(m.Name);
+                //System.Diagnostics.Debug.WriteLine(m.Name);
                 System.Diagnostics.Debug.WriteLine(m.Value);
                 EnsureFile(m.Value);
             });
@@ -50,7 +50,9 @@ namespace SnippetUtil
                 value.Length - (FieldManager.MStartStr.Length + FieldManager.MEndStr.Length));
             var filePath= Path.Combine(mDir, fileName);
             if (!File.Exists(filePath)) {
-                File.Create(filePath);
+                using (var file = File.Create(filePath)) {}
+                //var file = File.Create(filePath);
+                //file.Close();
             }
         }
 
