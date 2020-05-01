@@ -4,8 +4,12 @@
 return
 ^r::reload
 
-^Space::RunSnips()
-+^Space::RunSnipCreator()
+;^Space::RunSnips()
+;+^Space::RunSnipCreator()
+
+#-::RunSnips()
++#-::RunSnipCreator()
+
 
 ; ^,::RunSnips()
 
