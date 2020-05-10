@@ -108,8 +108,17 @@ namespace Scrapboard
             //richTextBox2.PreviewKeyDown
             //richTextBox2.KeyDown += RichTextBox2_KeyDown;
             richTextBox2.KeyPress += RichTextBox2_KeyPress;
+            richTextBox2.SelectionChanged += RichTextBox2_SelectionChanged;
+
             FldText = "<#*Element*#>\n#*SurroundContent*#\n</#*Element*#>\n<#*Element*#>\n#*SurroundContent*#\n</#*Element*#>";
             ProcessText();
+        }
+
+        private void RichTextBox2_SelectionChanged(object sender, EventArgs e)
+        {
+            System.Diagnostics.Debug.WriteLine(e.GetType().Name);
+            System.Diagnostics.Debug.WriteLine(e.ToString());
+            System.Diagnostics.Debug.WriteLine(richTextBox2.SelectionLength);
         }
 
         private void RichTextBox2_KeyPress(object sender, KeyPressEventArgs e)
@@ -246,6 +255,7 @@ namespace Scrapboard
         public void InsideFieldPlace2(int pos, out FieldPlace fp, out int fldInd, out int fldsInd)
         {
             fp = FieldPlaces.FirstOrDefault(fp1 => fp1.OutPutTextStart <= pos && pos <= fp1.OutPutTextEnd);
+            if (fp == null) { fldInd = -1;fldsInd = -1; return; }
             fldsInd = FieldPlaces.IndexOf(fp);
             var fn = fp.FldName;
             fldInd = FieldPlaces.Where(fp1 => fp1.FldName == fn).ToList().IndexOf(fp);
