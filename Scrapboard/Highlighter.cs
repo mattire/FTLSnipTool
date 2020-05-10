@@ -18,8 +18,11 @@ namespace Scrapboard
 
         internal void Highlight(Rewrite.FieldPlace fpl)
         {
+            var selCol = mRewrite.RichTextBox.SelectionColor;
             var selStart = mRewrite.RichTextBox.SelectionStart;
             var selLen   = mRewrite.RichTextBox.SelectionLength;
+
+            mRewrite.RichTextBox.SelectionColor = Color.LightGray;
 
             mRewrite.FieldPlaces.Where(fp1 => fp1.FldName==fpl.FldName).ToList().ForEach(fp =>
             {
@@ -33,12 +36,16 @@ namespace Scrapboard
 
             mRewrite.RichTextBox.SelectionStart  = selStart;
             mRewrite.RichTextBox.SelectionLength = selLen;
+            mRewrite.RichTextBox.SelectionColor = selCol;
         }
 
         internal void Unhighlight()
         {
+            var selCol = mRewrite.RichTextBox.SelectionColor;
             var selStart = mRewrite.RichTextBox.SelectionStart;
             var selLen = mRewrite.RichTextBox.SelectionLength;
+
+            mRewrite.RichTextBox.SelectionColor = Color.White;
 
             mRewrite.FieldPlaces.ForEach(fp =>
             {
@@ -52,6 +59,7 @@ namespace Scrapboard
 
             mRewrite.RichTextBox.SelectionStart = selStart;
             mRewrite.RichTextBox.SelectionLength = selLen;
+            mRewrite.RichTextBox.SelectionColor = selCol;
         }
     }
 }
