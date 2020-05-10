@@ -109,28 +109,37 @@ namespace Scrapboard
             //richTextBox2.KeyDown += RichTextBox2_KeyDown;
             richTextBox2.KeyPress += RichTextBox2_KeyPress;
             richTextBox2.SelectionChanged += RichTextBox2_SelectionChanged;
+            richTextBox2.KeyDown += RichTextBox2_KeyDown1;
 
             FldText = "<#*Element*#>\n#*SurroundContent*#\n</#*Element*#>\n<#*Element*#>\n#*SurroundContent*#\n</#*Element*#>";
             ProcessText();
         }
 
+        int SelectionLenghtOnKeyDown = 0;
+        private void RichTextBox2_KeyDown1(object sender, KeyEventArgs e)
+        {
+            System.Diagnostics.Debug.WriteLine("KeyDown" + richTextBox2.SelectionLength);
+            SelectionLenghtOnKeyDown = richTextBox2.SelectionLength;
+        }
+
         private void RichTextBox2_SelectionChanged(object sender, EventArgs e)
         {
-            System.Diagnostics.Debug.WriteLine(e.GetType().Name);
-            System.Diagnostics.Debug.WriteLine(e.ToString());
-            System.Diagnostics.Debug.WriteLine(richTextBox2.SelectionLength);
+            System.Diagnostics.Debug.WriteLine("SelCha" + richTextBox2.SelectionLength);
         }
 
         private void RichTextBox2_KeyPress(object sender, KeyPressEventArgs e)
         {
+            System.Diagnostics.Debug.WriteLine("KeyPress" + richTextBox2.SelectionLength);
+            //int selLen = richTextBox2.SelectionLength;
+            int selLen = SelectionLenghtOnKeyDown;
             if (char.IsLetterOrDigit(e.KeyChar) || e.KeyChar== '\b') {
                 e.Handled = true;
             }
             int selStart;
-            if (e.KeyChar == '\b') { selStart = richTextBox2.SelectionStart + 1; }
+            if (e.KeyChar == '\b' && selLen==0) { selStart = richTextBox2.SelectionStart + 1; }
             else { selStart = richTextBox2.SelectionStart; }
             //int selStart = richTextBox2.SelectionStart;
-            int selLen = richTextBox2.SelectionLength;
+            //int selLen = richTextBox2.SelectionLength;
 
             FieldPlace fp;
             int fieldsInd;
@@ -203,7 +212,7 @@ namespace Scrapboard
             value = value.Remove(fldPos, selLen);
             if (keyChar == '\b') { } // nothing to do
             else {
-                value.Insert( fldPos, keyChar.ToString());
+                value = value.Insert( fldPos, keyChar.ToString());
             }
             var fld = Fields.FirstOrDefault(f => f.Name == fp.FldName);
             fld.Value = value;
