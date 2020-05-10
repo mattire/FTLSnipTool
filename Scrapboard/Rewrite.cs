@@ -100,9 +100,14 @@ namespace Scrapboard
 
         public List<string> PartsBetween { get; set; } = new List<string>();
 
+        public Highlighter mHighlighter;
+
+        public RichTextBox RichTextBox { get { return richTextBox2; } }
+
         public Rewrite()
         {
             InitializeComponent();
+            mHighlighter = new Highlighter(this);
             //FldText = Clipboard.GetText();
             //richTextBox2.KeyDown
             //richTextBox2.PreviewKeyDown
@@ -122,15 +127,31 @@ namespace Scrapboard
             SelectionLenghtOnKeyDown = richTextBox2.SelectionLength;
         }
 
+        public bool HandleSelectionChanged { get; set; } = true;
         private void RichTextBox2_SelectionChanged(object sender, EventArgs e)
         {
-            System.Diagnostics.Debug.WriteLine("SelCha" + richTextBox2.SelectionLength);
+            if (HandleSelectionChanged)
+            {
+                System.Diagnostics.Debug.WriteLine("SelCha" + richTextBox2.SelectionLength);
+                var selStart = richTextBox2.SelectionStart;
+                FieldPlace fp;
+                int fieldsInd;
+                int fieldInd;
+                InsideFieldPlace2(selStart, out fp, out fieldInd, out fieldsInd);
+                HandleSelectionChanged = false;
+
+                mHighlighter.Unhighlight();
+                if (fp != null)
+                {
+                    mHighlighter.Highlight(fp);
+                }
+                HandleSelectionChanged = true;
+            }
         }
 
         private void RichTextBox2_KeyPress(object sender, KeyPressEventArgs e)
         {
             System.Diagnostics.Debug.WriteLine("KeyPress" + richTextBox2.SelectionLength);
-            //int selLen = richTextBox2.SelectionLength;
             int selLen = SelectionLenghtOnKeyDown;
             if (char.IsLetterOrDigit(e.KeyChar) || e.KeyChar== '\b') {
                 e.Handled = true;
@@ -138,8 +159,6 @@ namespace Scrapboard
             int selStart;
             if (e.KeyChar == '\b' && selLen==0) { selStart = richTextBox2.SelectionStart + 1; }
             else { selStart = richTextBox2.SelectionStart; }
-            //int selStart = richTextBox2.SelectionStart;
-            //int selLen = richTextBox2.SelectionLength;
 
             FieldPlace fp;
             int fieldsInd;
