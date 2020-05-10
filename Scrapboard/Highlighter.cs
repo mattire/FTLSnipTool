@@ -35,7 +35,7 @@ namespace Scrapboard
             mRewrite.RichTextBox.SelectionLength = selLen;
         }
 
-        internal void UnHighlight()
+        internal void Unhighlight()
         {
             var selStart = mRewrite.RichTextBox.SelectionStart;
             var selLen = mRewrite.RichTextBox.SelectionLength;
