@@ -80,9 +80,9 @@ namespace Scrapboard
                 OutputEnd = end + diff;
                 Value = txt.SubWithStartEndPoints(Start, End);
             }
-            public string GetOutTxt(string txt) {
-                return txt.SubWithStartEndPoints(OutputStart, OutputEnd);
-            }
+            //public string GetOutTxt(string txt) {
+            //    return txt.SubWithStartEndPoints(OutputStart, OutputEnd);
+            //}
             public string GetOrigTxt(string txt)
             {
                 return txt.SubWithStartEndPoints(Start, End);
@@ -108,7 +108,7 @@ namespace Scrapboard
             //richTextBox2.PreviewKeyDown
             //richTextBox2.KeyDown += RichTextBox2_KeyDown;
             richTextBox2.KeyPress += RichTextBox2_KeyPress;
-            FldText = "<#*Element*#>\n#*SurroundContent*#\n</#*Element*#>";
+            FldText = "<#*Element*#>\n#*SurroundContent*#\n</#*Element*#>\n<#*Element*#>\n#*SurroundContent*#\n</#*Element*#>";
             ProcessText();
         }
 
@@ -117,47 +117,88 @@ namespace Scrapboard
             if (char.IsLetterOrDigit(e.KeyChar) || e.KeyChar== '\b') {
                 e.Handled = true;
             }
-            int selStart = richTextBox2.SelectionStart;
+            int selStart;
+            if (e.KeyChar == '\b') { selStart = richTextBox2.SelectionStart + 1; }
+            else { selStart = richTextBox2.SelectionStart; }
+            //int selStart = richTextBox2.SelectionStart;
             int selLen = richTextBox2.SelectionLength;
 
-            if (selLen==0)
+            FieldPlace fp;
+            int fieldsInd;
+            int fieldInd;
+            if (selLen == 0)
             {
                 //var fp = InsideFieldPlace(selStart);
-                FieldPlace fp;
-                int fieldsInd;
-                int fieldInd;
                 InsideFieldPlace2(selStart, out fp, out fieldInd, out fieldsInd);
                 var outFp = InsideOutFieldPlace(selStart);
                 if (fp != null)
                 {
                     Process(fp, selStart, e.KeyChar, richTextBox2.Text);
-                    string newOrigTxt;
-                    string newOutTxt;
-                    AssembleText(out newOrigTxt, out newOutTxt);
-                    richTextBox1.Text = newOrigTxt;
-                    richTextBox2.Text = newOutTxt;
-                    FldText = newOrigTxt;
-                    ProcessText();
-                    
-                    if (e.KeyChar != '\b') {
-                        //int fpCount = GetFieldPlaceCount(fp);
-                        //richTextBox2.SelectionStart = selStart + 1 + fp.Order;
-                        richTextBox2.SelectionStart = selStart + fieldInd +1;
+                    RewriteFieldPlaces();
+                    //string newOrigTxt;
+                    //string newOutTxt;
+                    //AssembleText(out newOrigTxt, out newOutTxt);
+                    //richTextBox1.Text = newOrigTxt;
+                    //richTextBox2.Text = newOutTxt;
+                    //FldText = newOrigTxt;
+                    //ProcessText();
+
+                    if (e.KeyChar != '\b')
+                    {
+                        richTextBox2.SelectionStart = selStart + fieldInd + 1;
                     }
                     else
-                    { richTextBox2.SelectionStart = selStart - fieldInd; }
+                    { richTextBox2.SelectionStart = selStart - 1 - fieldInd; }
                 }
-                if (outFp != null) {
-                    //outFp.Update(selStart, e.KeyChar);
+                if (outFp != null)
+                {
                 }
-                //AssembleText()
             }
-            //throw new NotImplementedException();
+            else // Selection Length > 0
+            {
+                SelectionInsideFieldPlace(selStart, selLen, out fp, out fieldInd, out fieldsInd);
+                if (fp != null)
+                {
+                    Process(fp, selStart, selLen, e.KeyChar, richTextBox2.Text);
+                    RewriteFieldPlaces();
+                    if (e.KeyChar != '\b')
+                    {
+                        richTextBox2.SelectionStart = selStart + fieldInd + 1;
+                    }
+                    else
+                    { richTextBox2.SelectionStart = selStart - fieldInd * selLen; }
+                }
+            }
+                //throw new NotImplementedException();
+        }
+
+        private void RewriteFieldPlaces() {
+            string newOrigTxt;
+            string newOutTxt;
+            AssembleText(out newOrigTxt, out newOutTxt);
+            richTextBox1.Text = newOrigTxt;
+            richTextBox2.Text = newOutTxt;
+            FldText = newOrigTxt;
+            ProcessText();
         }
 
         private int GetFieldPlaceCount(FieldPlace fp)
         {
             return FieldPlaces.Where(fplace => fplace.FldName == fp.FldName).Count();
+        }
+
+        private void Process(FieldPlace fp, int selStart, int selLen, char keyChar, string text)
+        {
+            int fldPos = selStart - fp.OutPutTextStart;
+            string value = (string)fp.FldValue.Clone();
+            value = value.Remove(fldPos, selLen);
+            if (keyChar == '\b') { } // nothing to do
+            else {
+                value.Insert( fldPos, keyChar.ToString());
+            }
+            var fld = Fields.FirstOrDefault(f => f.Name == fp.FldName);
+            fld.Value = value;
+            FieldPlaces.Where(fpl => fpl.FldName == fld.Name).ToList().ForEach(fpl => fpl.FldValue = value);
         }
 
         private void Process(FieldPlace fp, int selStart, char keyChar, string text)
@@ -171,7 +212,7 @@ namespace Scrapboard
                 value = value.Insert(fldPos, keyChar.ToString());
             }
             else {
-                value = value.Remove(fldPos, 1);
+                value = value.Remove(fldPos -1, 1);
             }
             var fld = Fields.FirstOrDefault(f => f.Name == fp.FldName);
             fld.Value = value;
@@ -198,9 +239,9 @@ namespace Scrapboard
             return navKeys.Contains(e.KeyCode);
         }
 
-        public FieldPlace InsideFieldPlace(int pos) {
-            return FieldPlaces.FirstOrDefault(fld => fld.OutPutTextStart <= pos && pos <= fld.OutPutTextEnd);
-        }
+        //public FieldPlace InsideFieldPlace(int pos) {
+        //    return FieldPlaces.FirstOrDefault(fld => fld.OutPutTextStart <= pos && pos <= fld.OutPutTextEnd);
+        //}
 
         public void InsideFieldPlace2(int pos, out FieldPlace fp, out int fldInd, out int fldsInd)
         {
@@ -208,6 +249,29 @@ namespace Scrapboard
             fldsInd = FieldPlaces.IndexOf(fp);
             var fn = fp.FldName;
             fldInd = FieldPlaces.Where(fp1 => fp1.FldName == fn).ToList().IndexOf(fp);
+        }
+
+        public void SelectionInsideFieldPlace(int start, int selLength, out FieldPlace fp, out int fldInd, out int fldsInd)
+        {
+            // check start and end points are both inside fieldplace
+            int end = start + selLength;
+
+            FieldPlace fp1; int fldInd1; int fldsInd1;
+            FieldPlace fp2; int fldInd2; int fldsInd2;
+
+            InsideFieldPlace2(start, out fp1, out fldInd1, out fldsInd1);
+            InsideFieldPlace2(start, out fp2, out fldInd2, out fldsInd2);
+
+            if (Object.ReferenceEquals(fp1, fp2))
+            {
+                fp = fp1;
+                fldInd = fldInd1;
+                fldsInd = fldsInd1;
+            } else {
+                fp = null;
+                fldInd  = -1;
+                fldsInd = -1;
+            }
         }
 
 
@@ -268,17 +332,6 @@ namespace Scrapboard
             OutputText = sb.ToString();
             richTextBox2.Text = OutputText;
         }
-
-        private void AddCharFldValue(string fldName, int txtPos, char ch)
-        {
-            
-        }
-
-        private void RemoveCharFldValue(string fldName, int txtPos, char ch)
-        {
-
-        }
-
 
         private void AssembleText(out string newOrigTxt, out string newOutTxt)
         {
