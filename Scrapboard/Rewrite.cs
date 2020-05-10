@@ -14,6 +14,14 @@ namespace Scrapboard
     {
         //https://docs.microsoft.com/en-us/dotnet/api/system.windows.forms.control.previewkeydown?view=netcore-3.1
 
+        /*\
+         * \
+         *  ==========
+         *  CODECYCLER
+         *  ==========
+         * / 
+        */
+
         public class Field {
             public string Name { get; set; }
             public string Value { get; set; }
@@ -58,6 +66,7 @@ namespace Scrapboard
             public string TagName { get { return StartTag + FldName + EndTag; }  }
             public string TagValue { get { return StartTag + FldValue + EndTag; } }
 
+            public int OutLength { get { return OutPutTextEnd - OutPutTextStart; } }
 
             public int Order { get; set; }
 
@@ -100,7 +109,8 @@ namespace Scrapboard
 
         public List<string> PartsBetween { get; set; } = new List<string>();
 
-        public Highlighter mHighlighter;
+        private Highlighter mHighlighter;
+        private TabHandler mTabHandler;
 
         public RichTextBox RichTextBox { get { return richTextBox2; } }
 
@@ -108,6 +118,7 @@ namespace Scrapboard
         {
             InitializeComponent();
             mHighlighter = new Highlighter(this);
+            mTabHandler = new TabHandler(this);
             //FldText = Clipboard.GetText();
             //richTextBox2.KeyDown
             //richTextBox2.PreviewKeyDown
@@ -123,6 +134,12 @@ namespace Scrapboard
         int SelectionLenghtOnKeyDown = 0;
         private void RichTextBox2_KeyDown1(object sender, KeyEventArgs e)
         {
+            if (e.KeyCode == Keys.Tab)
+            {
+                mTabHandler.Next();
+                e.Handled = true;
+                return;
+            }
             System.Diagnostics.Debug.WriteLine("KeyDown" + richTextBox2.SelectionLength);
             SelectionLenghtOnKeyDown = richTextBox2.SelectionLength;
         }
@@ -151,6 +168,7 @@ namespace Scrapboard
 
         private void RichTextBox2_KeyPress(object sender, KeyPressEventArgs e)
         {
+
             System.Diagnostics.Debug.WriteLine("KeyPress" + richTextBox2.SelectionLength);
             int selLen = SelectionLenghtOnKeyDown;
             if (char.IsLetterOrDigit(e.KeyChar) || e.KeyChar== '\b') {
@@ -172,13 +190,6 @@ namespace Scrapboard
                 {
                     Process(fp, selStart, e.KeyChar, richTextBox2.Text);
                     RewriteFieldPlaces();
-                    //string newOrigTxt;
-                    //string newOutTxt;
-                    //AssembleText(out newOrigTxt, out newOutTxt);
-                    //richTextBox1.Text = newOrigTxt;
-                    //richTextBox2.Text = newOutTxt;
-                    //FldText = newOrigTxt;
-                    //ProcessText();
 
                     if (e.KeyChar != '\b')
                     {
