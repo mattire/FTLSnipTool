@@ -1,0 +1,4 @@
+android:layout_marginTop="#*mrgn1*#sp"
+android:layout_marginBottom="#*mrgn1*#sp"
+android:layout_marginRight="#*mrgn2*#sp"
+android:layout_marginLeft="#*mrgn2*#sp"
